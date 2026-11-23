@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% translate "About & licences" %}{% endblock %}
+
+{% block content %}
+    <p>
+        {% blocktranslate trimmed %}
+            This dashboard shows the workouts, nutrition, weight and measurements you track
+            with Sage.
+        {% endblocktranslate %}
+    </p>
+
+    <h4 class="mt-4">{% translate "Software" %}</h4>
+    <p>
+        {% blocktranslate trimmed %}
+            This dashboard runs a modified version of
+            <a href="https://github.com/wger-project/wger">wger</a>, free software licensed
+            under the
+            <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License v3</a>.
+        {% endblocktranslate %}
+    </p>
+    <p>
+        <a href="{{ source_url }}">{% translate "Source code of this dashboard" %}</a>
+        &middot; {% translate "Version" %} {{ version }}{% if date %} ({{ date }}){% endif %}
+    </p>
+
+    <h4 class="mt-4">{% translate "Data sources" %}</h4>
+    <ul>
+        <li>
+            {% blocktranslate trimmed %}
+                Exercises and exercise images: the
+                <a href="https://wger.de">wger</a> community, licensed
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+                Authors are credited on each exercise.
+            {% endblocktranslate %}
+        </li>
+        <li>
+            {% blocktranslate trimmed %}
+                Ingredients and nutritional values:
+                <a href="https://world.openfoodfacts.org">Open Food Facts</a>
+                (<a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL</a>, images
+                <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA</a>)
+                and other sources credited on each ingredient.
+            {% endblocktranslate %}
+        </li>
+    </ul>
+
+    {% if show_app_store_links %}
+        <h4 class="mt-4">{% translate "Mobile app" %}</h4>
+        <a href="https://play.google.com/store/apps/details?id=de.wger.flutter">
+            <img src="{% static 'images/logos/play-store/badge.svg' %}" alt="Google Play" height="40"></a>
+        <a href="https://apps.apple.com/us/app/wger-workout-manager/id6502226792">
+            <img src="{% static 'images/logos/app-store/black.svg' %}" alt="App Store" height="40"></a>
+        <a href="https://flathub.org/apps/de.wger.flutter">
+            <img src="{% static 'images/logos/flathub/black.svg' %}" alt="Flathub" height="40"></a>
+    {% endif %}
+{% endblock %}

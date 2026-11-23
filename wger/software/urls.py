@@ -14,6 +14,9 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 
+# Standard Library
+import os
+
 # Django
 from django.urls import path
 from django.views.generic import (
@@ -22,40 +25,33 @@ from django.views.generic import (
 )
 
 # wger
-from wger.software import views
 from wger.version import (
     get_version_date,
     get_version_with_git,
 )
 
 
+# AGPL-3.0 §13: users of this modified version must be offered its source.
+# Points at the exact deployed commit when the image was built with APP_BUILD_COMMIT.
+SOURCE_REPO = 'https://github.com/VinneyJ/wger'
+SOURCE_URL = f'{SOURCE_REPO}/tree/{os.environ.get("APP_BUILD_COMMIT") or "sage"}'
+
 urlpatterns = [
     path(
-        'terms-of-service',
-        TemplateView.as_view(template_name='tos.html'),
-        name='tos',
-    ),
-    path(
-        'features',
-        views.features,
-        name='features',
-    ),
-    path(
         'code',
-        RedirectView.as_view(permanent=True, url='https://github.com/wger-project/wger'),
+        RedirectView.as_view(url=SOURCE_URL),
         name='code',
     ),
     path(
-        'about-us',
+        'about',
         TemplateView.as_view(
-            template_name='about_us.html',
-            extra_context={'version': get_version_with_git(), 'date': get_version_date()},
+            template_name='about.html',
+            extra_context={
+                'version': get_version_with_git(),
+                'date': get_version_date(),
+                'source_url': SOURCE_URL,
+            },
         ),
-        name='about-us',
-    ),
-    path(
-        'api',
-        TemplateView.as_view(template_name='api.html'),
-        name='api',
+        name='about',
     ),
 ]

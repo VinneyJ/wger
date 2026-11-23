@@ -183,7 +183,7 @@ def delete(request, user_pk=None):
 
         if not user_pk:
             django_logout(request)
-            return HttpResponseRedirect(reverse('software:features'))
+            return HttpResponseRedirect(reverse('core:user:login'))
         else:
             gym_pk = request.user.userprofile.gym_id
             if gym_pk is None:
@@ -279,7 +279,7 @@ def logout(request):
 class WgerSignupView(AllauthSignupView):
     """
     allauth's signup view, with two wger carve-outs: registration disabled
-    globally redirects to the features page (instead of allauth's "signup
+    globally redirects to the login page (instead of allauth's "signup
     closed" page), and temporary (guest) users may still reach the
     registration page so they can create a real account.
 
@@ -289,7 +289,7 @@ class WgerSignupView(AllauthSignupView):
 
     def dispatch(self, request, *args, **kwargs):
         if not settings.WGER_SETTINGS['ALLOW_REGISTRATION']:
-            return HttpResponseRedirect(reverse('software:features'))
+            return HttpResponseRedirect(reverse('core:user:login'))
         if request.user.is_authenticated and request.user.userprofile.is_temporary:
             # Skip RedirectAuthenticatedUserMixin's "already logged in" redirect
             return super(RedirectAuthenticatedUserMixin, self).dispatch(request, *args, **kwargs)

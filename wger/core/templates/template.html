@@ -125,42 +125,20 @@
 <footer id="main-footer" class="bg-light border-top">
     <div class="container bg-wger-light">
         <div class="row">
-            <div class="col-xl-4 col-md-7 mt-2">
-                {% if show_app_store_links %}
-                    <a href="https://play.google.com/store/apps/details?id=de.wger.flutter">
-                        <img
-                            src="{% static 'images/logos/play-store/badge.svg' %}"
-                            alt="google play logo"
-                            height="40"
-                        /></a>
-                    <a href="https://apps.apple.com/us/app/wger-workout-manager/id6502226792">
-                        <img
-                            src="{% static 'images/logos/app-store/black.svg' %}"
-                            alt="app store logo"
-                            height="40"/></a>
-                    <a href="https://flathub.org/apps/de.wger.flutter">
-                        <img
-                            src="{% static 'images/logos/flathub/black.svg' %}"
-                            alt="flathub logo"
-                            height="40"
-                        /></a>
-                {% endif %}
-            </div>
-            <div class="col-xl-6 col-md-3">
-                <ul class="list-unstyled mb-0 pt-2">
-                    <li>
-                        <a href="{% url 'core:imprint' %}" class="text-muted small">
-                            {% translate "Imprint" %}
+            <div class="col-md-10">
+                <ul class="list-inline mb-0 pt-2">
+                    <li class="list-inline-item">
+                        <a href="{% url 'software:about' %}" class="text-muted small">
+                            {% translate "About & licences" %}
                         </a>
                     </li>
-                    <li>
-                        <a href="{% url 'software:tos' %}" class="text-muted small">
-                            {% translate "Terms of service" %}
+                    <li class="list-inline-item">
+                        <a href="{% url 'software:code' %}" class="text-muted small">
+                            {% translate "Source code" %}
                         </a>
                     </li>
                 </ul>
             </div>
-
             {#                                         #}
             {# Render the links to the other languages #}
             {#                                         #}
@@ -194,17 +172,6 @@
                                 {% endfor %}
                             </form>
 
-                            <li>
-                                <hr class="dropdown-divider"></hr>
-                            </li>
-                            <li>
-                                <a href="https://hosted.weblate.org/engage/wger/"
-                                   class="dropdown-item"
-                                   target="_blank">
-                                    <span class="{% fa_class 'plus' %}"></span>
-                                    {% translate "Translate" %}
-                                </a>
-                            </li>
                         </ul>
 
                     </div>

@@ -45,7 +45,7 @@ def index(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('core:dashboard'))
     else:
-        return HttpResponseRedirect(reverse('software:features'))
+        return HttpResponseRedirect(reverse('core:user:login'))
 
 
 def demo_entries(request):
@@ -53,7 +53,7 @@ def demo_entries(request):
     Creates a set of sample entries for guest users
     """
     if not settings.WGER_SETTINGS['ALLOW_GUEST_USERS']:
-        return HttpResponseRedirect(reverse('software:features'))
+        return HttpResponseRedirect(reverse('core:user:login'))
 
     if (
         not request.user.is_authenticated or request.user.userprofile.is_temporary

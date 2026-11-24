@@ -40,6 +40,7 @@ from rest_framework import (
     status,
     viewsets,
 )
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
@@ -199,6 +200,16 @@ class ProvisionedUserViewSet(
     def activate(self, request, pk=None):
         """Switch the account back on."""
         return self._set_active(True)
+
+    # [S-006]
+    @action(detail=True, methods=['post'], url_path='api-key')
+    def api_key(self, request, pk=None):
+        """
+        The user's API key (created on the first call, the same key after that), so the
+        service can act for the user, e.g. log meals on their behalf.
+        """
+        token, _ = Token.objects.get_or_create(user=self.get_object())
+        return Response({'key': token.key})
 
     def _set_active(self, active):
         user = self.get_object()

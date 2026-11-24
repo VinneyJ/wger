@@ -22,6 +22,7 @@ from datetime import timedelta
 from pathlib import Path
 
 # Third Party
+from corsheaders.defaults import default_headers
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
 from jwt.algorithms import RSAAlgorithm
@@ -614,7 +615,10 @@ SIMPLE_JWT = {
 # CORS headers: allow all hosts to access the API
 #
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_URLS_REGEX = r'^/api/.*$'
+# [S-004] Also the token-based app sign-in API, so browser apps on another domain can sign in.
+# The two-factor step sends X-Session-Token.
+CORS_URLS_REGEX = r'^/(api|allauth/app)/.*$'
+CORS_ALLOW_HEADERS = (*default_headers, 'x-session-token')
 
 #
 # Ignore these URLs if they cause 404

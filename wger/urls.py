@@ -39,7 +39,7 @@ from rest_framework_simplejwt.views import (
 )
 
 # wger
-from wger.core.api import views as core_api_views
+from wger.core.api import provisioning as provisioning_api, views as core_api_views
 from wger.exercises.api import views as exercises_api_views
 from wger.exercises.sitemap import ExercisesSitemap
 from wger.gallery.api import views as gallery_api_views
@@ -137,6 +137,12 @@ router.register(r'workoutlog', manager_api_views.WorkoutLogViewSet, basename='wo
 # Core app
 router.register(r'language', core_api_views.LanguageViewSet, basename='language')
 router.register(r'license', core_api_views.LicenseViewSet, basename='license')
+router.register(
+    r'provisioning/user', provisioning_api.ProvisionedUserViewSet, basename='provisioning-user'
+)
+router.register(
+    r'provisioning/gym', provisioning_api.ProvisionedGymViewSet, basename='provisioning-gym'
+)
 # userprofile is not registered here: a user has exactly one profile, so it is
 # a plain path without list or detail routes (see UserProfileView)
 router.register(

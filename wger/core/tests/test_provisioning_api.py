@@ -182,6 +182,38 @@ class ProvisioningUserTestCase(ProvisioningBase):
         self.assertTrue(User.objects.filter(pk=user.pk).exists())
 
 
+class ProvisioningApiKeyTestCase(ProvisioningBase):
+    """[S-006] A service account can get the API key of a user it created."""
+
+    def setUp(self):
+        super().setUp()
+        self.user_login('test')
+
+    def test_key_is_created_once_and_works(self):
+        user_id = self.create_user(password=STRONG_PASSWORD).json()['id']
+
+        first = self.client.post(self.user_url(user_id, 'api-key'))
+        self.assertEqual(first.status_code, 200)
+        key = first.json()['key']
+        self.assertRegex(key, r'^[0-9a-f]{40}$')
+        # Same key on a second call
+        self.assertEqual(self.client.post(self.user_url(user_id, 'api-key')).json()['key'], key)
+
+        # The key signs in as that user
+        self.client.logout()
+        response = self.client.get(reverse('userprofile'), HTTP_AUTHORIZATION=f'Token {key}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['username'], 'newmember')
+
+    def test_other_users_keys_are_not_given_out(self):
+        demo = User.objects.get(username='demo')
+        self.assertEqual(self.client.post(self.user_url(demo.pk, 'api-key')).status_code, 404)
+
+    def test_get_is_not_allowed(self):
+        user_id = self.create_user().json()['id']
+        self.assertEqual(self.client.get(self.user_url(user_id, 'api-key')).status_code, 405)
+
+
 class ProvisioningGymTestCase(ProvisioningBase):
     def setUp(self):
         super().setUp()

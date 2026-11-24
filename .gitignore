@@ -93,3 +93,6 @@ venv-wger
 
 # macOS
 .DS_Store
+
+# Reports written by extras/scripts/upgrade-upstream.sh
+upgrade-*-report.txt

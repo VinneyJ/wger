@@ -21,7 +21,6 @@ from django.urls import (
     path,
     re_path,
 )
-from django.views.generic import TemplateView
 
 # wger
 from wger.core.views import (
@@ -196,11 +195,6 @@ urlpatterns = [
     # The landing page
     path('', misc.index, name='index'),
     path('dashboard', ReactView.as_view(login_required=True), name='dashboard'),
-    path(
-        'imprint',
-        TemplateView.as_view(template_name='misc/about.html'),
-        name='imprint',
-    ),
     path('language/', include((patterns_language, 'language'), namespace='language')),
     path('user/', include((patterns_user, 'user'), namespace='user')),
     path('license/', include((patterns_license, 'license'), namespace='license')),

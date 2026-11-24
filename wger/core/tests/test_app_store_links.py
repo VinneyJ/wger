@@ -12,9 +12,6 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 
-# Standard Library
-from unittest import mock
-
 # Django
 from django.test import override_settings
 from django.urls import reverse
@@ -25,7 +22,7 @@ from wger.core.tests.base_testcase import WgerTestCase
 
 class AppStoreLinksTestCase(WgerTestCase):
     """
-    Test that WGER_SHOW_APP_STORE_LINKS controls the app store badges
+    Test that WGER_SHOW_APP_STORE_LINKS controls the app store badges on the About page
     """
 
     stores = (
@@ -34,32 +31,21 @@ class AppStoreLinksTestCase(WgerTestCase):
         'flathub.org',
     )
 
-    def test_footer_shows_the_badges_by_default(self):
-        response = self.client.get(reverse('core:user:login'))
+    def test_about_page_shows_the_badges_by_default(self):
+        response = self.client.get(reverse('software:about'))
 
         for store in self.stores:
             self.assertContains(response, store)
 
     @override_settings(WGER_SHOW_APP_STORE_LINKS=False)
-    def test_footer_badges_can_be_hidden(self):
-        response = self.client.get(reverse('core:user:login'))
+    def test_about_page_badges_can_be_hidden(self):
+        response = self.client.get(reverse('software:about'))
 
         for store in self.stores:
             self.assertNotContains(response, store)
 
-    @mock.patch('wger.software.views.requests.get')
-    def test_landing_page_shows_the_badges_by_default(self, mock_request):
-        mock_request.return_value.json.return_value = {'stargazers_count': 42}
-        response = self.client.get(reverse('software:features'))
+    def test_footer_has_no_badges(self):
+        response = self.client.get(reverse('core:user:login'))
 
-        for store in self.stores + ('f-droid.org',):
-            self.assertContains(response, store)
-
-    @override_settings(WGER_SHOW_APP_STORE_LINKS=False)
-    @mock.patch('wger.software.views.requests.get')
-    def test_landing_page_badges_can_be_hidden(self, mock_request):
-        mock_request.return_value.json.return_value = {'stargazers_count': 42}
-        response = self.client.get(reverse('software:features'))
-
-        for store in self.stores + ('f-droid.org',):
+        for store in self.stores:
             self.assertNotContains(response, store)

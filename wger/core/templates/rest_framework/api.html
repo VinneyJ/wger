@@ -20,7 +20,6 @@
 {% block breadcrumbs %}
     {{ block.super }}
 
-    {% breadcrumb "Api Documentation" "software:api" %}
     {% for breadcrumb_name, breadcrumb_url in breadcrumblist %}
         {% breadcrumb_raw breadcrumb_name breadcrumb_url %}
     {% endfor %}

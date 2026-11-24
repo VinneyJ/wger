@@ -16,6 +16,7 @@ every row says how we know it still works.
 | S-002 | Provisioning API for trusted service accounts (`/api/v2/provisioning/…`) | Active | `Add a provisioning API for trusted service accounts` | `wger/core/tests/test_provisioning_api.py` | Could be offered upstream |
 | S-003 | This list, the fork checks and the upgrade script | Active | `[S-003]` | `wger/core/tests/test_fork_changes.py` | Ours only |
 | S-004 | CORS also on the token-based app sign-in API (`/allauth/app/`), with `X-Session-Token` allowed, so browser apps on another domain can sign in; cookie pages stay same-origin | Active | `[S-004]` | `wger/core/tests/test_cors_app_auth.py` | Could be offered upstream |
+| S-005 | Tests and builds our image from `sage` (`.github/workflows/sage-image.yml`), published as `ghcr.io/vinneyj/wger-server:sage-<commit>` for homelab | Pending (PR #5) | `[S-005]` | `wger/core/tests/test_sage_image.py` | Ours only |
 
 **Status** is one of:
 - `Active`: on the branch; the upgrade script and tests make sure it stays.

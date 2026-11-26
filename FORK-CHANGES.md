@@ -18,6 +18,7 @@ every row says how we know it still works.
 | S-004 | CORS also on the token-based app sign-in API (`/allauth/app/`), with `X-Session-Token` allowed, so browser apps on another domain can sign in; cookie pages stay same-origin | Active | `[S-004]` | `wger/core/tests/test_cors_app_auth.py` | Could be offered upstream |
 | S-005 | Tests and builds our image from `sage` (`.github/workflows/sage-image.yml`), published as `ghcr.io/vinneyj/wger-server:sage-<commit>` for homelab | Active | `[S-005]` | `wger/core/tests/test_sage_image.py` | Ours only |
 | S-006 | Provisioning API gives out the API key of a user the service account created (`POST /api/v2/provisioning/user/<id>/api-key/`), so Sage can coach gym members who join with a code | Active | `[S-006]` | `wger/core/tests/test_provisioning_api.py` | Could be offered upstream (with S-002) |
+| S-007 | `api/v2/userprofile/` reads and writes the member's `first_name` and `last_name` (on the user), so apps can edit names | Active | `[S-007]` | `wger/core/tests/test_user_profile_api.py` | Could be offered upstream |
 
 **Status** is one of:
 - `Active`: on the branch; the upgrade script and tests make sure it stays.

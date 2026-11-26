@@ -44,12 +44,20 @@ class UserprofileSerializer(serializers.ModelSerializer):
     date_joined = serializers.DateTimeField(source='user.date_joined', read_only=True)
     email_verified = serializers.BooleanField(source='is_verified', read_only=True)
     is_trustworthy = serializers.BooleanField(read_only=True)
+    first_name = serializers.CharField(
+        source='user.first_name', max_length=150, required=False, allow_blank=True
+    )
+    last_name = serializers.CharField(
+        source='user.last_name', max_length=150, required=False, allow_blank=True
+    )
 
     class Meta:
         model = UserProfile
         read_only_fields = ('gym', 'is_temporary')
         fields = (
             'username',
+            'first_name',
+            'last_name',
             'email',
             'email_verified',
             'is_trustworthy',
@@ -79,6 +87,14 @@ class UserprofileSerializer(serializers.ModelSerializer):
             'num_days_weight_reminder',
             'time_zone',
         )
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', {})
+        if user_data:
+            for attr, value in user_data.items():
+                setattr(instance.user, attr, value)
+            instance.user.save(update_fields=list(user_data))
+        return super().update(instance, validated_data)
 
 
 class LanguageSerializer(serializers.ModelSerializer):

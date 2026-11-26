@@ -45,6 +45,26 @@ class UserProfileApiTestCase(WgerTestCase):
         self.assertEqual(response.json()['calories'], 2500)
         self.assertEqual(User.objects.get(username='test').userprofile.calories, 2500)
 
+    def test_patch_updates_first_and_last_name(self):
+        response = self.client.patch(
+            self.url,
+            data={'first_name': 'Ada', 'last_name': 'Lovelace'},
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['first_name'], 'Ada')
+        self.assertEqual(response.json()['last_name'], 'Lovelace')
+        user = User.objects.get(username='test')
+        self.assertEqual((user.first_name, user.last_name), ('Ada', 'Lovelace'))
+
+    def test_names_longer_than_150_characters_are_refused(self):
+        response = self.client.patch(
+            self.url, data={'first_name': 'a' * 151}, content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 400)
+
     def test_post_still_updates_the_profile(self):
         """POST is kept as a deprecated alias for clients written against the old API"""
         response = self.client.post(
